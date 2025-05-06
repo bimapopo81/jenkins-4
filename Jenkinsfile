@@ -53,10 +53,22 @@ pipeline {
 
     post {
         success {
-            discordSend (webhookURL: 'https://discord.com/api/webhooks/1369162621785477182/wI5eMHiepamlIck7OrDXDRfRgSygbwQCZYr0VwMJUQY5O74AYUg-8ZtiOHFsnKaKQWMr', message: "Build Success: ${env.JOB_NAME} #${env.BUILD_NUMBER}")
+            script {
+                // Mengirimkan notifikasi sukses ke Discord
+                def discordMessage = """{
+                    "content": "Build Success: ${env.JOB_NAME} #${env.BUILD_NUMBER} on branch ${env.BRANCH_NAME}"
+                }"""
+                httpRequest acceptType: 'APPLICATION_JSON', contentType: 'APPLICATION_JSON', httpMode: 'POST', url: 'https://discord.com/api/webhooks/1369162621785477182/wI5eMHiepamlIck7OrDXDRfRgSygbwQCZYr0VwMJUQY5O74AYUg-8ZtiOHFsnKaKQWMr', requestBody: discordMessage
+            }
         }
         failure {
-            discordSend (webhookURL: 'https://discord.com/api/webhooks/1369162621785477182/wI5eMHiepamlIck7OrDXDRfRgSygbwQCZYr0VwMJUQY5O74AYUg-8ZtiOHFsnKaKQWMr', message: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}")
+            script {
+                // Mengirimkan notifikasi gagal ke Discord
+                def discordMessage = """{
+                    "content": "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER} on branch ${env.BRANCH_NAME}"
+                }"""
+                httpRequest acceptType: 'APPLICATION_JSON', contentType: 'APPLICATION_JSON', httpMode: 'POST', url: 'https://discord.com/api/webhooks/1369162621785477182/wI5eMHiepamlIck7OrDXDRfRgSygbwQCZYr0VwMJUQY5O74AYUg-8ZtiOHFsnKaKQWMr', requestBody: discordMessage
+            }
         }
     }
 }
