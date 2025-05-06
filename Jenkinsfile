@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     environment {
-        BRANCH_NAME = 'main'  // Set variabel BRANCH_NAME jika tidak ada
+        // Set BRANCH_NAME menjadi 'feature' untuk mensimulasikan branch feature
+        BRANCH_NAME = 'feature'  // Ubah nilai ini untuk mensimulasikan branch feature
     }
 
     stages {
@@ -17,7 +18,7 @@ pipeline {
 
         stage('Build') {
             when {
-                expression { env.BRANCH_NAME == 'main' }
+                expression { env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'feature' }
             }
             steps {
                 script {
@@ -41,7 +42,7 @@ pipeline {
 
         stage('Deploy') {
             when {
-                expression { env.BRANCH_NAME == 'main' }
+                expression { env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'feature' }
             }
             steps {
                 script {
